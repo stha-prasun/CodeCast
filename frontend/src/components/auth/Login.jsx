@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const Login = () => {
   return (
@@ -84,9 +85,9 @@ const Login = () => {
           </div>
           <p className="text-center mt-4">
             New to CodeCast?{" "}
-            <a href="#" className="text-primary hover:underline">
+            <Link to="/signup" className="text-primary hover:underline">
               Sign Up
-            </a>
+            </Link>
           </p>
         </div>
       </div>

@@ -1,3 +1,6 @@
+import React from "react";
+import { Link } from "react-router";
+
 const Signup = () => {
     return (
       <div className="min-h-screen flex justify-center items-center bg-base-200">
@@ -50,7 +53,7 @@ const Signup = () => {
             <div className="text-center mt-4">
               <p>
                 Already have an account?{" "}
-                <a href="/login" className="text-primary">Login here</a>
+                <Link to="/login" className="text-primary">Login here</Link>
               </p>
             </div>
           </form>
