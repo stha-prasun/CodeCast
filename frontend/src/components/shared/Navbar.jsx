@@ -1,7 +1,9 @@
 import React from "react";
 import { FaCode } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const {loggedInUser} = useSelector((store)=>store.auth);
   return (
     <>
       <div className="navbar bg-base-100 shadow-sm pl-20 pr-20">
@@ -21,7 +23,7 @@ const Navbar = () => {
               <div className="w-10 rounded-full">
                 <img
                   alt="avatar"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  src={loggedInUser?.profilePic}
                 />
               </div>
             </div>

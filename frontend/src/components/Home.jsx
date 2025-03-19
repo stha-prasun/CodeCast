@@ -2,15 +2,23 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./shared/Navbar";
 import { IoIosCreate } from "react-icons/io";
 import { FaPlus, FaCode, FaInfo } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const Home = () => {
   const [currentDate, setCurrentDate] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const date = new Date();
     const formattedDate = date.toLocaleDateString();
     setCurrentDate(formattedDate);
   }, []);
+
+  const {loggedInUser} = useSelector((store)=>store.auth);
+  // if(!loggedInUser){
+  //   navigate("/login");
+  // }
 
   return (
     <div>

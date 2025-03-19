@@ -3,9 +3,12 @@ import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { USER_API_ENDPOINT } from "../../utils/constants";
+import { useDispatch } from "react-redux";
+import { setLoggedInUser } from "../../redux/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [input, setinput] = useState({
     email: "",
@@ -35,6 +38,7 @@ const Login = () => {
 
       if (res.data.success) {
         toast.success(res.data.message);
+        dispatch(setLoggedInUser(res.data.loggedInUser));
         navigate("/");
       }
     } catch (error) {
