@@ -76,10 +76,11 @@ export const login = async (req, res) => {
       expiresIn: "1d",
     });
 
-    const loggedInUseruser = {
+    const loggedInUser = {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
+      profilePic : user.profilePic
     };
 
     return res
@@ -92,7 +93,7 @@ export const login = async (req, res) => {
       .json({
         message: `Welcome Back ${user.fullname}!!`,
         success: true,
-        loggedInUseruser,
+        loggedInUser,
       });
   } catch (error) {
     console.log(error);
