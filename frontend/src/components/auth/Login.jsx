@@ -1,19 +1,62 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { USER_API_ENDPOINT } from "../../utils/constants";
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const [input, setinput] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setinput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `${USER_API_ENDPOINT}/login`,
+        {
+          email: input.email,
+          password: input.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-base-200">
         <div className="w-full max-w-md p-8 bg-base-100 shadow-xl rounded-lg">
           <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email Address</span>
               </label>
               <input
-                type="email"
+                value={input.email}
+                onChange={handleChange}
+                type="text"
+                name="email"
                 placeholder="Enter your email"
                 className="input input-bordered w-full"
               />
@@ -23,13 +66,18 @@ const Login = () => {
                 <span className="label-text">Password</span>
               </label>
               <input
+                value={input.password}
+                onChange={handleChange}
                 type="password"
+                name="password"
                 placeholder="Enter your password"
                 className="input input-bordered w-full"
               />
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary w-full">Sign In</button>
+              <button type="submit" className="btn btn-primary w-full">
+                Sign In
+              </button>
             </div>
           </form>
           <div className="divider my-6">OR</div>
