@@ -70,7 +70,7 @@ const Home = () => {
         <div className="flex flex-col items-center ml-10">
           <img className="h-64 rounded-3xl shadow-xl mb-4" src="/img.jpg" alt="img"/>
           <h1 className="text-xl font-semibold">{currentDate}</h1>
-          <h1 className="text-lg text-gray-700">{`Welcome, ${loggedInUser?.name}`}</h1>
+          <h1 className="text-lg text-gray-700">{`Welcome, ${loggedInUser?.fullname}`}</h1>
         </div>
       </div>
     </div>
