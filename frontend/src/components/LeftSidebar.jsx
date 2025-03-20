@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const LeftSidebar = () => {
-  const { loggedInUser } = useSelector((store) => store.auth);
+  const { userAction } = useSelector((store) => store.action);
 
   return (
     <div className="bg-gray-800 h-[92vh] w-60 p-6 flex flex-col items-center space-y-8">
@@ -42,10 +42,11 @@ const LeftSidebar = () => {
 
       {/* Bottom Buttons */}
       <div className="w-full mt-auto space-y-4">
-      <button className="btn btn-success w-full">Copy Room ID</button>
+        <button className="btn btn-success w-full">Copy Room ID</button>
 
-        <button className="btn btn-primary w-full">Save</button>
-
+        {userAction == "editor" && (
+          <button className="btn btn-primary w-full">Save</button>
+        )}
         <button className="btn btn-info w-full">Use AI</button>
 
         <button className="btn btn-secondary w-full">Leave</button>

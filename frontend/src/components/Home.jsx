@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./shared/Navbar";
 import { IoIosCreate } from "react-icons/io";
 import { FaPlus, FaCode, FaInfo } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { setUserAction } from "../redux/userActionSlice";
 
 const Home = () => {
   const [currentDate, setCurrentDate] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const date = new Date();
@@ -28,7 +30,10 @@ const Home = () => {
         {/* Icons Div */}
         <div className="grid grid-cols-2 md:grid-cols-2 gap-12">
           <div className="flex flex-col items-center">
-            <button className="btn btn-warning h-16 w-16 rounded-xl flex items-center justify-center shadow-lg">
+            <button onClick={()=>{
+              dispatch(setUserAction("editor"));
+              navigate("/editor");
+              }} className="btn btn-warning h-16 w-16 rounded-xl flex items-center justify-center shadow-lg">
               <IoIosCreate size={30} className="text-white" />
             </button>
             <span>
@@ -36,7 +41,7 @@ const Home = () => {
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <button className="btn btn-primary h-16 w-16 rounded-xl flex items-center justify-center shadow-lg">
+            <button onClick={()=>dispatch(setUserAction("viewer"))} className="btn btn-primary h-16 w-16 rounded-xl flex items-center justify-center shadow-lg">
               <FaPlus size={30} className="text-white" />
             </button>
             <span>
@@ -65,7 +70,7 @@ const Home = () => {
         <div className="flex flex-col items-center ml-10">
           <img className="h-64 rounded-3xl shadow-xl mb-4" src="/img.jpg" alt="img"/>
           <h1 className="text-xl font-semibold">{currentDate}</h1>
-          <h1 className="text-lg text-gray-700">Welcome, Name</h1>
+          <h1 className="text-lg text-gray-700">{`Welcome, ${loggedInUser?.name}`}</h1>
         </div>
       </div>
     </div>
