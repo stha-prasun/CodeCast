@@ -12,6 +12,10 @@ const initializeSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
 
+    socket.on('codeChange', (data) => {
+      console.log(data);
+    });
+
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
     });
