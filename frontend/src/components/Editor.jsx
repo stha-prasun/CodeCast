@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import MonacoEditor from "@monaco-editor/react";
 import Navbar from "./shared/Navbar";
 import LeftSidebar from "./LeftSidebar";
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:8080");
 
 const Editor = () => {
   const [code, setCode] = useState("");
