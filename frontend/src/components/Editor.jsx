@@ -37,7 +37,7 @@ const Editor = () => {
       <Navbar />
       <div className="w-full flex-1 flex overflow-hidden">
         {/* Sidebar */}
-        <LeftSidebar users={users}/>
+        <LeftSidebar users={users} />
 
         {/* Monaco Editor */}
         <div className="flex-1 p-4 overflow-hidden">

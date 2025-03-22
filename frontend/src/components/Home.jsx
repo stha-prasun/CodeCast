@@ -10,7 +10,7 @@ import io from "socket.io-client";
 const socket = io.connect("http://localhost:8080");
 
 const Home = () => {
-  const [currentDate, setCurrentDate] = useState('');
+  const [currentDate, setCurrentDate] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const Home = () => {
     setCurrentDate(formattedDate);
   }, []);
 
-  const {loggedInUser} = useSelector((store)=>store.auth);
+  const { loggedInUser } = useSelector((store) => store.auth);
   // if(!loggedInUser){
   //   navigate("/login");
   // }
@@ -29,15 +29,17 @@ const Home = () => {
     <div>
       <Navbar />
       <div className="flex items-center justify-center gap-12 mt-40">
-
         {/* Icons Div */}
         <div className="grid grid-cols-2 md:grid-cols-2 gap-12">
           <div className="flex flex-col items-center">
-            <button onClick={()=>{
-              socket.emit("userJoined", loggedInUser?._id);
-              dispatch(setUserAction("editor"));
-              navigate("/editor");
-              }} className="btn btn-warning h-16 w-16 rounded-xl flex items-center justify-center shadow-lg">
+            <button
+              onClick={() => {
+                socket.emit("userJoined", loggedInUser?._id);
+                dispatch(setUserAction("editor"));
+                navigate("/editor");
+              }}
+              className="btn btn-warning h-16 w-16 rounded-xl flex items-center justify-center shadow-lg"
+            >
               <IoIosCreate size={30} className="text-white" />
             </button>
             <span>
@@ -45,7 +47,10 @@ const Home = () => {
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <button onClick={()=>dispatch(setUserAction("viewer"))} className="btn btn-primary h-16 w-16 rounded-xl flex items-center justify-center shadow-lg">
+            <button
+              onClick={() => dispatch(setUserAction("viewer"))}
+              className="btn btn-primary h-16 w-16 rounded-xl flex items-center justify-center shadow-lg"
+            >
               <FaPlus size={30} className="text-white" />
             </button>
             <span>
@@ -72,7 +77,11 @@ const Home = () => {
 
         {/* Image Div */}
         <div className="flex flex-col items-center ml-10">
-          <img className="h-64 rounded-3xl shadow-xl mb-4" src="/img.jpg" alt="img"/>
+          <img
+            className="h-64 rounded-3xl shadow-xl mb-4"
+            src="/img.jpg"
+            alt="img"
+          />
           <h1 className="text-xl font-semibold">{currentDate}</h1>
           <h1 className="text-lg text-gray-700">{`Welcome, ${loggedInUser?.fullname}`}</h1>
         </div>

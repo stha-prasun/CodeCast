@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const LeftSidebar = ({users}) => {
+const LeftSidebar = ({ users }) => {
   const { userAction } = useSelector((store) => store.action);
 
   return (
@@ -15,20 +15,15 @@ const LeftSidebar = ({users}) => {
       <div className="overflow-y-auto w-full flex-1">
         <div className="grid grid-cols-2 gap-6 p-2">
           {/* Example User Avatar (using DaisyUI avatar component) */}
-          {
-            users?.map((user)=>(
-              <div className="flex justify-center items-center">
+          {users?.map((user) => (
+            <div className="flex justify-center items-center">
               <div className="avatar">
                 <div className="w-15 h-15 rounded-full">
-                  <img
-                    src={user?.profilePic}
-                    alt="User Avatar"
-                  />
+                  <img src={user?.profilePic} alt="User Avatar" />
                 </div>
               </div>
             </div>
-            ))
-          }
+          ))}
         </div>
       </div>
 
