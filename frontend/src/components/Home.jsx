@@ -5,6 +5,9 @@ import { FaPlus, FaCode, FaInfo } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setUserAction } from "../redux/userActionSlice";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:8080");
 
 const Home = () => {
   const [currentDate, setCurrentDate] = useState('');
@@ -31,6 +34,7 @@ const Home = () => {
         <div className="grid grid-cols-2 md:grid-cols-2 gap-12">
           <div className="flex flex-col items-center">
             <button onClick={()=>{
+              socket.emit("userJoined", loggedInUser?._id);
               dispatch(setUserAction("editor"));
               navigate("/editor");
               }} className="btn btn-warning h-16 w-16 rounded-xl flex items-center justify-center shadow-lg">

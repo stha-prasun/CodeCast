@@ -8,8 +8,13 @@ const socket = io.connect("http://localhost:8080");
 
 const Editor = () => {
   const [code, setCode] = useState("");
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    socket.on("activeUsers", (users) => {
+      setUsers(users);
+    });
+
     // Listen for code updates from the server
     socket.on("codeUpdate", (newCode) => {
       setCode(newCode);
@@ -18,6 +23,7 @@ const Editor = () => {
     // Cleanup on component unmount
     return () => {
       socket.off("codeUpdate");
+      socket.off("activeUsers");
     };
   }, []);
 
@@ -31,7 +37,7 @@ const Editor = () => {
       <Navbar />
       <div className="w-full flex-1 flex overflow-hidden">
         {/* Sidebar */}
-        <LeftSidebar />
+        <LeftSidebar users={users}/>
 
         {/* Monaco Editor */}
         <div className="flex-1 p-4 overflow-hidden">
@@ -45,7 +51,7 @@ const Editor = () => {
               fontFamily: "'Courier New', monospace",
             }}
             value={code}
-            onChange={handleCodeChange} //
+            onChange={handleCodeChange}
           />
         </div>
       </div>
