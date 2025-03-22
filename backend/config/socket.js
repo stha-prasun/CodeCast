@@ -23,7 +23,6 @@ const initializeSocket = (server) => {
         // Store user in activeUsers map
         activeUsers.set(socket.id, { profilePic: user.profilePic });
 
-        // Send updated active users list to all clients
         io.emit("activeUsers", Array.from(activeUsers.values()));
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -31,12 +30,13 @@ const initializeSocket = (server) => {
     });
 
     socket.on("codeChange", (data) => {
-      console.log(data);
       socket.broadcast.emit("codeUpdate", data);
     });
 
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
+      activeUsers.delete(socket.id);
+      io.emit("activeUsers", Array.from(activeUsers.values()));
     });
   });
 
