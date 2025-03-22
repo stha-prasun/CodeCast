@@ -25,13 +25,12 @@ const initializeSocket = (server) => {
 
         // Send updated active users list to all clients
         io.emit("activeUsers", Array.from(activeUsers.values()));
-
       } catch (error) {
         console.error("Error fetching user:", error);
       }
     });
 
-    socket.on('codeChange', (data) => {
+    socket.on("codeChange", (data) => {
       console.log(data);
       socket.broadcast.emit("codeUpdate", data);
     });
