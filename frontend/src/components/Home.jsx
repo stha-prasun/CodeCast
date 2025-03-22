@@ -25,6 +25,12 @@ const Home = () => {
   //   navigate("/login");
   // }
 
+  const handleNewCode = () => {
+    socket.emit("userJoined", loggedInUser?._id);
+    dispatch(setUserAction("editor"));
+    navigate("/editor");
+  };
+
   return (
     <div>
       <Navbar />
@@ -33,11 +39,7 @@ const Home = () => {
         <div className="grid grid-cols-2 md:grid-cols-2 gap-12">
           <div className="flex flex-col items-center">
             <button
-              onClick={() => {
-                socket.emit("userJoined", loggedInUser?._id);
-                dispatch(setUserAction("editor"));
-                navigate("/editor");
-              }}
+              onClick={handleNewCode}
               className="btn btn-warning h-16 w-16 rounded-xl flex items-center justify-center shadow-lg"
             >
               <IoIosCreate size={30} className="text-white" />
@@ -47,12 +49,38 @@ const Home = () => {
             </span>
           </div>
           <div className="flex flex-col items-center">
+            {/* You can open the modal using document.getElementById('ID').showModal() method */}
             <button
-              onClick={() => dispatch(setUserAction("viewer"))}
               className="btn btn-primary h-16 w-16 rounded-xl flex items-center justify-center shadow-lg"
+              onClick={() => {
+                document.getElementById("my_modal_3").showModal();
+                dispatch(setUserAction("viewer"));
+              }}
             >
               <FaPlus size={30} className="text-white" />
             </button>
+            <dialog id="my_modal_3" className="modal">
+              <div className="modal-box">
+                <form method="dialog">
+                  {/* Close button */}
+                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                    ✕
+                  </button>
+                </form>
+                <h3 className="font-bold text-lg">Join Room</h3>
+                <p className="py-2">Enter the room ID to join:</p>
+
+                <div className="flex flex-col gap-4 mt-4">
+                  <input
+                    type="text"
+                    placeholder="Enter Room ID"
+                    className="input input-bordered w-full"
+                  />
+                  <button className="btn btn-primary w-full">Join Room</button>
+                </div>
+              </div>
+            </dialog>
+
             <span>
               <p className="mt-2 text-sm text-center">Join Room</p>
             </span>
