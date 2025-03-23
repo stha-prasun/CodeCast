@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setUserAction } from "../redux/userActionSlice";
 import io from "socket.io-client";
+import { v4 as uuidv4 } from 'uuid';
+import { setRoomID } from "../redux/roomSlice";
 
 const socket = io.connect("http://localhost:8080");
 
@@ -29,6 +31,7 @@ const Home = () => {
     socket.emit("userJoined", loggedInUser?._id);
     dispatch(setUserAction("editor"));
     navigate("/editor");
+    dispatch(setRoomID(uuidv4()));
   };
 
   return (
