@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setUserAction } from "../redux/userActionSlice";
 import io from "socket.io-client";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { setRoomID } from "../redux/roomSlice";
 
 const socket = io.connect("http://localhost:8080");
 
 const Home = () => {
   const [currentDate, setCurrentDate] = useState("");
+  const [joinRoomID, setjoinRoomID] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,10 +29,19 @@ const Home = () => {
   // }
 
   const handleNewCode = () => {
-    socket.emit("userJoined", loggedInUser?._id);
+    const roomId = uuidv4();
+    console.log(roomId);
+    socket.emit("userJoined", loggedInUser?._id, roomId);
     dispatch(setUserAction("editor"));
+    dispatch(setRoomID(roomId));
     navigate("/editor");
-    dispatch(setRoomID(uuidv4()));
+  };
+
+  const handleJoinRoom = () => {
+    socket.emit("userJoined", loggedInUser?._id, joinRoomID);
+    dispatch(setUserAction("viewer"));
+    dispatch(setRoomID(joinRoomID));
+    navigate("/editor");
   };
 
   return (
@@ -57,7 +67,6 @@ const Home = () => {
               className="btn btn-primary h-16 w-16 rounded-xl flex items-center justify-center shadow-lg"
               onClick={() => {
                 document.getElementById("my_modal_3").showModal();
-                dispatch(setUserAction("viewer"));
               }}
             >
               <FaPlus size={30} className="text-white" />
@@ -78,8 +87,17 @@ const Home = () => {
                     type="text"
                     placeholder="Enter Room ID"
                     className="input input-bordered w-full"
+                    value={joinRoomID}
+                    onChange={(e) => {
+                      setjoinRoomID(e.target.value);
+                    }}
                   />
-                  <button className="btn btn-primary w-full">Join Room</button>
+                  <button
+                    onClick={handleJoinRoom}
+                    className="btn btn-primary w-full"
+                  >
+                    Join Room
+                  </button>
                 </div>
               </div>
             </dialog>

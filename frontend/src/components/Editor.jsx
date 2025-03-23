@@ -3,10 +3,12 @@ import MonacoEditor from "@monaco-editor/react";
 import Navbar from "./shared/Navbar";
 import LeftSidebar from "./LeftSidebar";
 import io from "socket.io-client";
+import { useSelector } from "react-redux";
 
 const socket = io.connect("http://localhost:8080");
 
 const Editor = () => {
+  const {roomID} = useSelector((store)=>store.room);
   const [code, setCode] = useState("");
   const [users, setUsers] = useState([]);
 
@@ -25,11 +27,11 @@ const Editor = () => {
       socket.off("codeUpdate");
       socket.off("activeUsers");
     };
-  }, []);
+  }, [roomID]);
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
-    socket.emit("codeChange", newCode);
+    socket.emit("codeChange", newCode, roomID);
   };
 
   return (
