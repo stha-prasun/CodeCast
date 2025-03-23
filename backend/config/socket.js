@@ -15,7 +15,7 @@ const initializeSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
 
-    socket.on("userJoined", async (userId) => {
+    socket.on("userJoined", async (userId, room) => {
       try {
         const user = await User.findById(userId).select("profilePic");
         if (!user) return;
@@ -23,13 +23,18 @@ const initializeSocket = (server) => {
         // Store user in activeUsers map
         activeUsers.set(socket.id, { profilePic: user.profilePic });
 
+        // Join a room
+        socket.join(room);
+
+        // io.to(room).emit("activeUsers", Array.from(activeUsers.values()));
         io.emit("activeUsers", Array.from(activeUsers.values()));
       } catch (error) {
         console.error("Error fetching user:", error);
       }
     });
 
-    socket.on("codeChange", (data) => {
+    socket.on("codeChange", (data, room) => { 
+      // socket.to(room).emit("codeUpdate", data);
       socket.broadcast.emit("codeUpdate", data);
     });
 
