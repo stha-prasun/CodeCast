@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const LeftSidebar = ({ users }) => {
+const LeftSidebar = ({ users, code }) => {
   const { userAction } = useSelector((store) => store.action);
+  const [input, setInput] = useState({
+    name: "",
+    description: "",
+  });
+
+  const handleChange = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(input);
+    console.log(code);
+
+    // Close modal after saving
+    document.getElementById("my_modal_3").close();
+  };
 
   return (
     <div className="bg-gray-800 h-[92vh] w-60 p-6 flex flex-col items-center space-y-8">
@@ -14,9 +31,8 @@ const LeftSidebar = ({ users }) => {
       {/* User Avatars Grid */}
       <div className="overflow-y-auto w-full flex-1">
         <div className="grid grid-cols-2 gap-6 p-2">
-          {/* Example User Avatar (using DaisyUI avatar component) */}
-          {users?.map((user) => (
-            <div className="flex justify-center items-center">
+          {users?.map((user, index) => (
+            <div key={index} className="flex justify-center items-center">
               <div className="avatar">
                 <div className="w-15 h-15 rounded-full">
                   <img src={user?.profilePic} alt="User Avatar" />
@@ -31,11 +47,70 @@ const LeftSidebar = ({ users }) => {
       <div className="w-full mt-auto space-y-4">
         <button className="btn btn-success w-full">Copy Room ID</button>
 
-        {userAction == "editor" && (
-          <button className="btn btn-primary w-full">Save</button>
+        {userAction === "editor" && (
+          <>
+            {/* Button to open the modal */}
+            <button
+              className="btn btn-primary w-full"
+              onClick={() => document.getElementById("my_modal_3").showModal()}
+            >
+              Save
+            </button>
+
+            {/* Modal */}
+            <dialog id="my_modal_3" className="modal">
+              <div className="modal-box">
+                <button
+                  className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                  onClick={() => document.getElementById("my_modal_3").close()}
+                >
+                  ✕
+                </button>
+
+                {/* Modal Title */}
+                <h3 className="font-bold text-lg">Save Code</h3>
+
+                {/* Form for saving data */}
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Name Input */}
+                  <label className="form-control w-full">
+                    <span className="label-text font-medium">Name</span>
+                    <input
+                      type="text"
+                      placeholder="Enter a name"
+                      className="input input-bordered w-full"
+                      name="name"
+                      value={input.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </label>
+
+                  {/* Description Input */}
+                  <label className="form-control w-full">
+                    <span className="label-text font-medium">Description</span>
+                    <textarea
+                      placeholder="Enter a description"
+                      className="textarea textarea-bordered w-full"
+                      rows="3"
+                      name="description"
+                      value={input.description}
+                      onChange={handleChange}
+                    ></textarea>
+                  </label>
+
+                  {/* Save Button */}
+                  <div className="modal-action">
+                    <button type="submit" className="btn btn-success w-full">
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </dialog>
+          </>
         )}
         <button className="btn btn-info w-full">Use AI</button>
-
         <button className="btn btn-secondary w-full">Leave</button>
       </div>
     </div>
