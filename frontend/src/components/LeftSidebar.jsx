@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { CODE_API_ENDPOINT } from "../utils/constants";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const LeftSidebar = ({ users, code }) => {
   const { userAction } = useSelector((store) => store.action);
+  const { loggedInUser } = useSelector((store) => store.auth);
+
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -14,8 +19,34 @@ const LeftSidebar = ({ users, code }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(input);
-    console.log(code);
+    try {
+      const res = await axios.post(
+        `${CODE_API_ENDPOINT}/save`,
+        {
+          title: input.name,
+          description: input.description,
+          code,
+          userID: loggedInUser?._id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setInput({
+          name: "",
+          description: "",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
 
     // Close modal after saving
     document.getElementById("my_modal_3").close();
