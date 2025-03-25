@@ -107,7 +107,7 @@ const Home = () => {
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <button className="btn btn-primary h-16 w-16 rounded-xl flex items-center justify-center shadow-lg">
+            <button onClick={()=>navigate("/view/snippets")} className="btn btn-primary h-16 w-16 rounded-xl flex items-center justify-center shadow-lg">
               <FaCode size={30} className="text-white" />
             </button>
             <span>

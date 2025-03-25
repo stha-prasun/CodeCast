@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Signup from "./components/auth/Signup";
 import Home from "./components/Home";
 import Editor from "./components/Editor";
+import SnippetsList from "./components/SnippetsList";
 
 const App = () => {
   const appRouter = createBrowserRouter([
@@ -22,6 +23,10 @@ const App = () => {
     {
       path: "/editor",
       element: <Editor />,
+    },
+    {
+      path: "/view/snippets",
+      element: <SnippetsList />,
     },
   ]);
   return (
