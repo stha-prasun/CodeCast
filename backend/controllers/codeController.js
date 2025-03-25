@@ -1,4 +1,5 @@
 import CodeSnippet from "../models/codeSnippetSchema.js";
+import { User } from "../models/userSchema.js";
 
 export const saveCode = async (req, res) => {
   try {
@@ -11,13 +12,20 @@ export const saveCode = async (req, res) => {
       });
     }
 
-    await CodeSnippet.create({
+    const snippet = await CodeSnippet.create({
       title,
       description,
       code,
       author: userID,
     });
 
+    const user = await User.findById(userID);
+
+    if (user) {
+      user.snippets.push(snippet._id);
+      await user.save();
+    }
+    
     return res.status(200).json({
       message: "Code Saved!!",
       success: true,
