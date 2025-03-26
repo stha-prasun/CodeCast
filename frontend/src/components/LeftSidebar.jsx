@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 const LeftSidebar = ({ users, code }) => {
   const { userAction } = useSelector((store) => store.action);
   const { loggedInUser } = useSelector((store) => store.auth);
+  const {roomID} = useSelector((store)=>store.room);
 
   const [input, setInput] = useState({
     name: "",
@@ -52,6 +53,11 @@ const LeftSidebar = ({ users, code }) => {
     document.getElementById("my_modal_3").close();
   };
 
+  const handleCopy = async () =>{
+    await navigator.clipboard.writeText(roomID);
+    toast.success("Room ID Copied");
+  }
+
   return (
     <div className="bg-gray-800 h-[92vh] w-60 p-6 flex flex-col items-center space-y-8">
       {/* Sidebar Title */}
@@ -76,7 +82,7 @@ const LeftSidebar = ({ users, code }) => {
 
       {/* Bottom Buttons */}
       <div className="w-full mt-auto space-y-4">
-        <button className="btn btn-success w-full">Copy Room ID</button>
+        <button onClick={handleCopy} className="btn btn-success w-full">Copy Room ID</button>
 
         {userAction === "editor" && (
           <>
