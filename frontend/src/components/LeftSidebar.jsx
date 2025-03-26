@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CODE_API_ENDPOINT } from "../utils/constants";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
+import { setRoomID } from "../redux/roomSlice";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:8080");
 
 const LeftSidebar = ({ users, code }) => {
   const { userAction } = useSelector((store) => store.action);
   const { loggedInUser } = useSelector((store) => store.auth);
   const {roomID} = useSelector((store)=>store.room);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [input, setInput] = useState({
     name: "",
@@ -56,6 +64,12 @@ const LeftSidebar = ({ users, code }) => {
   const handleCopy = async () =>{
     await navigator.clipboard.writeText(roomID);
     toast.success("Room ID Copied");
+  }
+
+  const handleLeave = () =>{
+    socket.emit("leaveRoom", roomID);
+    dispatch(setRoomID(""));
+    navigate("/");
   }
 
   return (
@@ -148,7 +162,7 @@ const LeftSidebar = ({ users, code }) => {
           </>
         )}
         <button className="btn btn-info w-full">Use AI</button>
-        <button className="btn btn-secondary w-full">Leave</button>
+        <button onClick={handleLeave} className="btn btn-secondary w-full">Leave</button>
       </div>
     </div>
   );
