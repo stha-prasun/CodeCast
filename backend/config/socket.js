@@ -38,6 +38,12 @@ const initializeSocket = (server) => {
       socket.broadcast.emit("codeUpdate", data);
     });
 
+    socket.on("leaveRoom", (room)=>{
+      socket.leave(room);
+      activeUsers.delete(socket.id);
+      io.emit("activeUsers", Array.from(activeUsers.values()));
+    })
+
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
       activeUsers.delete(socket.id);
